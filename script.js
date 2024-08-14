@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const dropdownItems = dropdownWrapper.querySelectorAll(".dropdown__item");
   let timeoutId;
 
-  // Initialisation de GSAP
   gsap.set(dropdownWrapper, {
     opacity: 0,
     visibility: "hidden",
@@ -17,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       duration: 0.3,
       opacity: 1,
       visibility: "visible",
-      backdropFilter: "blur(8px)", // Ajustez la valeur selon vos besoins
+      backdropFilter: "blur(8px)",
       ease: "power2.out",
     });
 
