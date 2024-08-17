@@ -1,3 +1,31 @@
+//////////////////////COMMENTAIRE ICI//////////////////////
+document.addEventListener("DOMContentLoaded", () => {
+  const gradientBgs = document.querySelectorAll(".gradient-blur-bg");
+
+  gradientBgs.forEach((bg) => {
+    // Animation de mouvement subtil
+    gsap.to(bg, {
+      x: "8%",
+      y: "8%",
+      rotation: 2,
+      duration: 10,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+
+    // Animation de changement de taille
+    gsap.to(bg, {
+      scale: 1.1,
+      duration: 15,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+  });
+});
+
+//////////////////////COMMENTAIRE ICI//////////////////////
 document.addEventListener("DOMContentLoaded", () => {
   const videoWrappers = document.querySelectorAll(".home-video__wrapper");
 
@@ -12,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let activeVideoIndex = Math.floor(Math.random() * videoBe.length);
 
-    gsap.set(itemWrappers, { height: "4.72rem", width: "auto" });
+    gsap.set(itemWrappers, { height: "4.72rem", width: "20rem" });
     gsap.set(button, { opacity: 0 });
     gsap.set(title, { opacity: 1 });
     gsap.set(videoBe, { opacity: 0 });
@@ -23,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tl.to(itemWrappers, {
       height: "32rem",
-      width: "20rem",
+      width: "auto",
       duration: 0.8,
       ease: "power3.inOut",
     })
