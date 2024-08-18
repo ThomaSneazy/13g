@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const gradientBgs = document.querySelectorAll(".gradient-blur-bg");
 
   gradientBgs.forEach((bg) => {
-    // Animation de mouvement subtil
     gsap.to(bg, {
       x: "8%",
       y: "8%",
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ease: "sine.inOut",
     });
 
-    // Animation de changement de taille
     gsap.to(bg, {
       scale: 1.1,
       duration: 15,
