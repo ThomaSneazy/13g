@@ -1,4 +1,4 @@
-//////////////////////COMMENTAIRE ICI//////////////////////
+//////////////////////Gradient div in bg//////////////////////
 document.addEventListener("DOMContentLoaded", () => {
   const gradientBgs = document.querySelectorAll(".gradient-blur-bg");
 
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-//////////////////////COMMENTAIRE ICI//////////////////////
+//////////////////////Hover on video button home//////////////////////
 document.addEventListener("DOMContentLoaded", () => {
   const videoWrappers = document.querySelectorAll(".home-video__wrapper");
 
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-//////////////////////COMMENTAIRE ICI//////////////////////
+//////////////////////Navbar dropdown//////////////////////
 document.addEventListener("DOMContentLoaded", () => {
   const buttonDrop = document.querySelector(".button-drop");
   const dropdownWrapper = document.querySelector(".dropdown__list__wrapper");
