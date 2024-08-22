@@ -1,4 +1,76 @@
-console.log("cc");
+//////////////////////Services buttons animation//////////////////////
+
+const buttonBlocks = document.querySelectorAll(".services__button-block");
+
+function initializeButtonBlock(block) {
+  const buttons = block.querySelectorAll(".services__button-logo");
+  const arrowButton = block.querySelector(".services__button-logo.is-arrow");
+  const otherButtons = block.querySelectorAll(
+    ".services__button-logo:not(.is-arrow)",
+  );
+
+  gsap.set(buttons, { y: "22.9rem" });
+
+  otherButtons.forEach((button) => {
+    const rotateElement = button.querySelector(".rotate");
+    if (rotateElement) {
+      const randomRotation = Math.random() * 360 - 180;
+      gsap.set(rotateElement, { rotationZ: randomRotation });
+    }
+  });
+
+  function animateButtons() {
+    const timeline = gsap.timeline();
+
+    timeline
+      .to(arrowButton, {
+        y: "-10rem",
+        duration: 1.2,
+        ease: "power2.inOut",
+      })
+      .to(
+        arrowButton,
+        {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power1.inOut",
+        },
+        "-=0.3",
+      );
+
+    timeline.to(
+      otherButtons,
+      {
+        y: "0rem",
+        duration: 1,
+        ease: "power2.out",
+        stagger: 0.1,
+      },
+      "-=0.6",
+    );
+
+    otherButtons.forEach((button) => {
+      const rotateElement = button.querySelector(".rotate");
+      if (rotateElement) {
+        timeline.to(
+          rotateElement,
+          {
+            rotationZ: 0,
+            duration: 1.2,
+            ease: "power2.out",
+          },
+          "-=1",
+        );
+      }
+    });
+
+    return timeline;
+  }
+
+  arrowButton.addEventListener("click", animateButtons);
+}
+
+buttonBlocks.forEach(initializeButtonBlock);
 
 //////////////////////Gradient div in bg//////////////////////
 document.addEventListener("DOMContentLoaded", () => {
