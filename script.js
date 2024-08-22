@@ -1,11 +1,13 @@
+console.log("cc");
+
 //////////////////////Gradient div in bg//////////////////////
 document.addEventListener("DOMContentLoaded", () => {
   const gradientBgs = document.querySelectorAll(".gradient-blur-bg");
 
   gradientBgs.forEach((bg) => {
     gsap.to(bg, {
-      x: "8%",
-      y: "8%",
+      x: "10%",
+      y: "10%",
       rotation: 2,
       duration: 10,
       repeat: -1,
