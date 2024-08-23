@@ -1,84 +1,167 @@
-//////////////////////Services buttons animation//////////////////////
+///////////////////TAGS EFFECT ON CLICK SERVICE BUTTON////////////////////
+$(document).ready(function () {
+  const $arrowButtons = $(".services__button-logo.is-arrow");
+  const $tagLists = $(".tag__list");
+  let currentService = "Agences";
 
-const buttonBlocks = document.querySelectorAll(".services__button-block");
+  function getRandomTags($tagList, count) {
+    const $tags = $tagList.find(".tag__item");
+    return $tags
+      .get()
+      .sort(() => 0.5 - Math.random())
+      .slice(0, count);
+  }
 
-function initializeButtonBlock(block) {
-  const buttons = block.querySelectorAll(".services__button-logo");
-  const arrowButton = block.querySelector(".services__button-logo.is-arrow");
-  const otherButtons = block.querySelectorAll(
-    ".services__button-logo:not(.is-arrow)",
-  );
+  function animateTagsOut($tagList) {
+    return gsap.to($tagList.find(".tag__item:not(.hidden)").get(), {
+      y: 50,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: "power2.in",
+    });
+  }
 
-  gsap.set(buttons, { y: "22.9rem" });
+  function animateTagsIn($tagList) {
+    const $tagsToAnimate = $tagList.find(".tag__item:not(.hidden)");
+    gsap.set($tagsToAnimate.get(), { y: -50, opacity: 0 });
+    return gsap.to($tagsToAnimate.get(), {
+      y: 0,
+      opacity: 1,
+      duration: 0.5,
+      stagger: 0.05,
+      ease: "power2.out",
+    });
+  }
 
-  otherButtons.forEach((button) => {
-    const rotateElement = button.querySelector(".rotate");
-    if (rotateElement) {
-      const randomRotation = Math.random() * 360 - 180;
-      gsap.set(rotateElement, { rotationZ: randomRotation });
+  function switchTags(newServiceName) {
+    if (newServiceName === currentService) {
+      const $currentTagList = $(
+        `.tag__list[data-name-services="${currentService}"]`,
+      );
+      animateTagsOut($currentTagList).then(() =>
+        animateTagsIn($currentTagList),
+      );
+      return;
     }
-  });
 
-  function animateButtons() {
     const timeline = gsap.timeline();
 
-    timeline
-      .to(arrowButton, {
-        y: "-10rem",
-        duration: 1.2,
-        ease: "power2.inOut",
-      })
-      .to(
-        arrowButton,
-        {
-          opacity: 0,
-          duration: 0.4,
-          ease: "power1.inOut",
-        },
-        "-=0.3",
-      );
-
-    timeline.to(
-      otherButtons,
-      {
-        y: "0rem",
-        duration: 1,
-        ease: "power2.out",
-        stagger: 0.1,
-      },
-      "-=0.6",
+    const $currentTagList = $(
+      `.tag__list[data-name-services="${currentService}"]`,
     );
+    const $newTagList = $(`.tag__list[data-name-services="${newServiceName}"]`);
 
-    otherButtons.forEach((button) => {
-      const rotateElement = button.querySelector(".rotate");
-      if (rotateElement) {
-        timeline.to(
-          rotateElement,
-          {
-            rotationZ: 0,
-            duration: 1.2,
-            ease: "power2.out",
-          },
-          "-=1",
-        );
+    if ($currentTagList.length) {
+      timeline.add(animateTagsOut($currentTagList));
+      timeline.set($currentTagList.get(), { display: "none" }, ">");
+    }
+
+    if ($newTagList.length) {
+      timeline.set($newTagList.get(), { display: "flex" }, ">");
+      $newTagList.find(".tag__item").removeClass("hidden");
+      timeline.add(animateTagsIn($newTagList));
+    }
+
+    currentService = newServiceName;
+  }
+
+  const $agencesTagList = $('.tag__list[data-name-services="Agences"]');
+  if ($agencesTagList.length) {
+    $agencesTagList.css("display", "flex");
+    const $randomTags = $(getRandomTags($agencesTagList, 5));
+    $agencesTagList.find(".tag__item").addClass("hidden");
+    $randomTags.removeClass("hidden");
+    animateTagsIn($agencesTagList);
+  }
+
+  $arrowButtons.on("click", function () {
+    const serviceName = $(this).attr("data-name-services");
+    switchTags(serviceName);
+  });
+});
+
+//////////////////////SERVICES BUTTONS ANIMATION//////////////////////
+
+$(document).ready(function () {
+  const $buttonBlocks = $(".services__button-block");
+
+  function initializeButtonBlock(block) {
+    const $block = $(block);
+    const $buttons = $block.find(".services__button-logo");
+    const $arrowButton = $block.find(".services__button-logo.is-arrow");
+    const $otherButtons = $block.find(".services__button-logo:not(.is-arrow)");
+
+    gsap.set($buttons.get(), { y: "22.9rem" });
+
+    $otherButtons.each(function () {
+      const $rotateElement = $(this).find(".rotate");
+      if ($rotateElement.length) {
+        const randomRotation = Math.random() * 360 - 180;
+        gsap.set($rotateElement.get(0), { rotationZ: randomRotation });
       }
     });
 
-    return timeline;
+    function animateButtons() {
+      const timeline = gsap.timeline();
+
+      timeline
+        .to($arrowButton.get(0), {
+          y: "-10rem",
+          duration: 1.2,
+          ease: "power2.inOut",
+        })
+        .to(
+          $arrowButton.get(0),
+          {
+            opacity: 0,
+            duration: 0.4,
+            ease: "power1.inOut",
+          },
+          "-=0.3",
+        );
+
+      timeline.to(
+        $otherButtons.get(),
+        {
+          y: "0rem",
+          duration: 1,
+          ease: "power2.out",
+          stagger: 0.1,
+        },
+        "-=0.6",
+      );
+
+      $otherButtons.each(function () {
+        const $rotateElement = $(this).find(".rotate");
+        if ($rotateElement.length) {
+          timeline.to(
+            $rotateElement.get(0),
+            {
+              rotationZ: 0,
+              duration: 1.2,
+              ease: "power2.out",
+            },
+            "-=1",
+          );
+        }
+      });
+
+      return timeline;
+    }
+
+    $arrowButton.on("click", animateButtons);
   }
 
-  arrowButton.addEventListener("click", animateButtons);
-}
+  $buttonBlocks.each(function () {
+    initializeButtonBlock(this);
+  });
+});
 
-buttonBlocks.forEach(initializeButtonBlock);
+//////////////////////GRADIENT EFFECT NOISE/BLUR EFFECT//////////////////////
+$(document).ready(function () {
+  const $gradientBgs = $(".gradient-blur-bg");
 
-//////////////////////Gradient div in bg//////////////////////
-
-//////////////////////Gradient div in bg//////////////////////
-document.addEventListener("DOMContentLoaded", () => {
-  const gradientBgs = document.querySelectorAll(".gradient-blur-bg");
-
-  gradientBgs.forEach((bg) => {
     gsap.to(bg, {
       x: "10%",
       y: "10%",
@@ -99,48 +182,49 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-//////////////////////Hover on video button home//////////////////////
-document.addEventListener("DOMContentLoaded", () => {
-  const videoWrappers = document.querySelectorAll(".home-video__wrapper");
+//////////////////////HOVER ON VIDEO HOMEPAGE//////////////////////
+$(document).ready(function () {
+  const $videoWrappers = $(".home-video__wrapper");
 
-  videoWrappers.forEach((wrapper) => {
-    const itemWrappers = wrapper.querySelectorAll(".home-video__item__wrapper");
-    const button = wrapper.querySelector(".button-icon.is-video-section");
-    const title = wrapper.querySelector(".home-video__btn .heading-style-h3");
-    const videoBe = wrapper.querySelectorAll(".video-be");
-    const openButton = wrapper.querySelector(".home-video-btn__open");
-    const openIcon = openButton.querySelector(".icon-arrow");
-    const closeIcon = openButton.querySelector(".icon-arrow.is-close");
+  $videoWrappers.each(function () {
+    const $wrapper = $(this);
+    const $itemWrappers = $wrapper.find(".home-video__item__wrapper");
+    const $button = $wrapper.find(".button-icon.is-video-section");
+    const $title = $wrapper.find(".home-video__btn .heading-style-h3");
+    const $videoBe = $wrapper.find(".video-be");
+    const $openButton = $wrapper.find(".home-video-btn__open");
+    const $openIcon = $openButton.find(".icon-arrow:not(.is-close)");
+    const $closeIcon = $openButton.find(".icon-arrow.is-close");
 
-    let activeVideoIndex = Math.floor(Math.random() * videoBe.length);
+    let activeVideoIndex = Math.floor(Math.random() * $videoBe.length);
 
-    gsap.set(itemWrappers, { height: "4.72rem", width: "20rem" });
-    gsap.set(button, { opacity: 0 });
-    gsap.set(title, { opacity: 1 });
-    gsap.set(videoBe, { opacity: 0 });
-    gsap.set(openButton, { left: "0.4rem" });
-    gsap.set(closeIcon, { opacity: 0 });
+    gsap.set($itemWrappers.get(), { height: "4.72rem", width: "20rem" });
+    gsap.set($button.get(0), { opacity: 0 });
+    gsap.set($title.get(0), { opacity: 1 });
+    gsap.set($videoBe.get(), { opacity: 0 });
+    gsap.set($openButton.get(0), { left: "0.4rem" });
+    gsap.set($closeIcon.get(0), { opacity: 0 });
 
     const tl = gsap.timeline({ paused: true });
 
-    tl.to(itemWrappers, {
+    tl.to($itemWrappers.get(), {
       height: "32rem",
-      width: "auto",
+      width: "25rem",
       duration: 0.8,
       ease: "power3.inOut",
     })
       .to(
-        button,
+        $button.get(0),
         {
           opacity: 1,
           duration: 0.4,
           ease: "power2.inOut",
-          onStart: () => button.classList.add("pointer-events-auto"),
+          onStart: () => $button.addClass("pointer-events-auto"),
         },
         "-=0.6",
       )
       .to(
-        title,
+        $title.get(0),
         {
           opacity: 0,
           duration: 0.4,
@@ -149,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.4",
       )
       .to(
-        videoBe[activeVideoIndex],
+        $videoBe.get(activeVideoIndex),
         {
           opacity: 1,
           duration: 0.4,
@@ -158,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.4",
       )
       .to(
-        openButton,
+        $openButton.get(0),
         {
           left: "98%",
           xPercent: -100,
@@ -168,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3",
       )
       .to(
-        openIcon,
+        $openIcon.get(0),
         {
           opacity: 0,
           duration: 0.2,
@@ -177,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.3",
       )
       .to(
-        closeIcon,
+        $closeIcon.get(0),
         {
           opacity: 1,
           duration: 0.2,
@@ -187,13 +271,13 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     const toggleVideo = () => {
-      gsap.to(videoBe[activeVideoIndex], {
+      gsap.to($videoBe.get(activeVideoIndex), {
         opacity: 0,
         duration: 0.4,
         ease: "power2.inOut",
       });
-      activeVideoIndex = (activeVideoIndex + 1) % videoBe.length;
-      gsap.to(videoBe[activeVideoIndex], {
+      activeVideoIndex = (activeVideoIndex + 1) % $videoBe.length;
+      gsap.to($videoBe.get(activeVideoIndex), {
         opacity: 1,
         duration: 0.4,
         ease: "power2.inOut",
@@ -201,51 +285,55 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const hideAllVideos = () => {
-      gsap.to(videoBe, { opacity: 0, duration: 0.4, ease: "power2.inOut" });
+      gsap.to($videoBe.get(), {
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.inOut",
+      });
     };
 
-    wrapper.addEventListener("mouseenter", () => {
+    $wrapper.on("mouseenter", function () {
       tl.play();
-      wrapper.classList.add("z-index-2");
+      $wrapper.addClass("z-index-2");
     });
 
-    wrapper.addEventListener("mouseleave", () => {
+    $wrapper.on("mouseleave", function () {
       tl.reverse();
       hideAllVideos();
-      wrapper.classList.remove("z-index-2");
-      button.classList.remove("pointer-events-auto");
+      $wrapper.removeClass("z-index-2");
+      $button.removeClass("pointer-events-auto");
     });
 
-    openButton.addEventListener("click", (e) => {
+    $openButton.on("click", function (e) {
       e.stopPropagation();
       if (tl.progress() === 0 || tl.reversed()) {
         tl.play();
-        wrapper.classList.add("z-index-2");
+        $wrapper.addClass("z-index-2");
       } else {
         tl.reverse();
         hideAllVideos();
-        wrapper.classList.remove("z-index-2");
-        button.classList.remove("pointer-events-auto");
+        $wrapper.removeClass("z-index-2");
+        $button.removeClass("pointer-events-auto");
       }
     });
   });
 });
-//////////////////////Navbar dropdown//////////////////////
-document.addEventListener("DOMContentLoaded", () => {
-  const buttonDrop = document.querySelector(".button-drop");
-  const dropdownWrapper = document.querySelector(".dropdown__list__wrapper");
-  const dropdownItems = dropdownWrapper.querySelectorAll(".dropdown__item");
+//////////////////////NAVBAR DROPDOWN//////////////////////
+$(document).ready(function () {
+  const $buttonDrop = $(".button-drop");
+  const $dropdownWrapper = $(".dropdown__list__wrapper");
+  const $dropdownItems = $dropdownWrapper.find(".dropdown__item");
   let timeoutId;
 
-  gsap.set(dropdownWrapper, {
+  gsap.set($dropdownWrapper.get(0), {
     opacity: 0,
     visibility: "hidden",
     backdropFilter: "blur(0px)",
   });
-  gsap.set(dropdownItems, { opacity: 0, y: 10 });
+  gsap.set($dropdownItems.get(), { opacity: 0, y: 10 });
 
   function showDropdown() {
-    gsap.to(dropdownWrapper, {
+    gsap.to($dropdownWrapper.get(0), {
       duration: 0.3,
       opacity: 1,
       visibility: "visible",
@@ -253,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ease: "power2.out",
     });
 
-    gsap.to(dropdownItems, {
+    gsap.to($dropdownItems.get(), {
       duration: 0.3,
       opacity: 1,
       y: 0,
@@ -263,17 +351,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function hideDropdown() {
-    gsap.to(dropdownWrapper, {
+    gsap.to($dropdownWrapper.get(0), {
       duration: 0.3,
       opacity: 0,
       backdropFilter: "blur(0px)",
       ease: "power2.in",
       onComplete: () => {
-        gsap.set(dropdownWrapper, { visibility: "hidden" });
+        gsap.set($dropdownWrapper.get(0), { visibility: "hidden" });
       },
     });
 
-    gsap.to(dropdownItems, {
+    gsap.to($dropdownItems.get(), {
       duration: 0.2,
       opacity: 0,
       y: 10,
@@ -282,22 +370,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  buttonDrop.addEventListener("mouseenter", () => {
+  $buttonDrop.on("mouseenter", function () {
     clearTimeout(timeoutId);
     showDropdown();
   });
 
-  buttonDrop.addEventListener("mouseleave", () => {
-    timeoutId = setTimeout(() => {
-      if (!dropdownWrapper.matches(":hover")) {
+  $buttonDrop.on("mouseleave", function () {
+    timeoutId = setTimeout(function () {
+      if (!$dropdownWrapper.is(":hover")) {
         hideDropdown();
       }
     }, 100);
   });
 
-  dropdownWrapper.addEventListener("mouseleave", () => {
-    timeoutId = setTimeout(() => {
-      if (!buttonDrop.matches(":hover")) {
+  $dropdownWrapper.on("mouseleave", function () {
+    timeoutId = setTimeout(function () {
+      if (!$buttonDrop.is(":hover")) {
         hideDropdown();
       }
     }, 100);
