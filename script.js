@@ -162,9 +162,6 @@ $(document).ready(function () {
 $(document).ready(function () {
   const $gradientBgs = $(".gradient-blur-bg");
 
-  $gradientBgs.each(function () {
-    const bg = this;
-
     gsap.to(bg, {
       x: "10%",
       y: "10%",
