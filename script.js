@@ -73,6 +73,8 @@ function initializeButtonBlock(block) {
 buttonBlocks.forEach(initializeButtonBlock);
 
 //////////////////////Gradient div in bg//////////////////////
+
+//////////////////////Gradient div in bg//////////////////////
 document.addEventListener("DOMContentLoaded", () => {
   const gradientBgs = document.querySelectorAll(".gradient-blur-bg");
 
