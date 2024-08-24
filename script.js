@@ -1,5 +1,122 @@
 console.log("cc2");
+///////////HOVER AND CLICK BUTTON BLUR BG////////////////////
+$(document).ready(function () {
+  $(".button__gradient__item").each(function () {
+    const $buttonItem = $(this);
+    const $buttonLink = $buttonItem.find(".button__gradient__link");
+    const $buttonToggle = $buttonItem.find(".button__gradient__toggle");
+    const $buttonBg = $buttonItem.find(".button__gradient__bg");
+    const $buttonLogo = $buttonItem.find(".button__gradient__logo");
+    const $buttonTextWrapper = $buttonItem.find(
+      ".button__gradient__button-text__wrapper",
+    );
 
+    let isAnimated = false;
+    const buttonToggleWidth = 14;
+
+    gsap.set($buttonBg, { opacity: 0, width: "30%", filter: "blur(70px)" });
+    gsap.set($buttonToggle, { left: "0%", width: "6.11rem" });
+    gsap.set($buttonTextWrapper, { opacity: 0 });
+
+    function updateButtonPosition() {
+      if (isAnimated) {
+        const buttonItemWidth = $buttonItem.width();
+        const newLeft =
+          buttonItemWidth -
+          buttonToggleWidth *
+            parseFloat(getComputedStyle(document.documentElement).fontSize);
+        gsap.to($buttonToggle, {
+          left: newLeft + "px",
+          duration: 0.3,
+          ease: "power2.inOut",
+        });
+      }
+    }
+
+    $buttonItem.hover(
+      function () {
+        if (!isAnimated) {
+          gsap.to($buttonBg, {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power2.out",
+          });
+        }
+      },
+      function () {
+        if (!isAnimated) {
+          gsap.to($buttonBg, {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in",
+          });
+        }
+      },
+    );
+
+    $buttonItem.on("click", function (e) {
+      if (!isAnimated) {
+        e.preventDefault();
+        isAnimated = true;
+
+        gsap.to($buttonBg, {
+          width: "100%",
+          filter: "blur(0px)",
+          duration: 0.8,
+          ease: "power2.inOut",
+        });
+
+        const tl = gsap.timeline({ delay: 0.1 });
+        tl.to($buttonToggle, {
+          width: buttonToggleWidth + "rem",
+          duration: 0.5,
+          ease: "power2.inOut",
+        });
+        tl.to(
+          $buttonLogo,
+          {
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          "-=0.3",
+        );
+        tl.to(
+          $buttonTextWrapper,
+          {
+            opacity: 1,
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          "-=0.3",
+        );
+        tl.to(
+          $buttonToggle,
+          {
+            left: () => {
+              const buttonItemWidth = $buttonItem.width();
+              return (
+                buttonItemWidth -
+                buttonToggleWidth *
+                  parseFloat(
+                    getComputedStyle(document.documentElement).fontSize,
+                  ) +
+                "px"
+              );
+            },
+            duration: 1,
+            ease: "power3.inOut",
+          },
+          "-=0.3",
+        );
+
+        $buttonLink.removeClass("pointer-none");
+      }
+    });
+
+    $(window).on("resize", updateButtonPosition);
+  });
+});
 ///////////TAGS EFFECT ON CLICK SERVICE BUTTON////////////////////
 $(document).ready(function () {
   const $arrowButtons = $(".services__button-logo.is-arrow");
