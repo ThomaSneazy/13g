@@ -1,4 +1,6 @@
-///////////////////TAGS EFFECT ON CLICK SERVICE BUTTON////////////////////
+console.log("cc2");
+
+///////////TAGS EFFECT ON CLICK SERVICE BUTTON////////////////////
 $(document).ready(function () {
   const $arrowButtons = $(".services__button-logo.is-arrow");
   const $tagLists = $(".tag__list");
@@ -161,6 +163,9 @@ $(document).ready(function () {
 //////////////////////GRADIENT EFFECT NOISE/BLUR EFFECT//////////////////////
 $(document).ready(function () {
   const $gradientBgs = $(".gradient-blur-bg");
+
+  $gradientBgs.each(function () {
+    const bg = this;
 
     gsap.to(bg, {
       x: "10%",
