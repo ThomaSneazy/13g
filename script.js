@@ -1,5 +1,17 @@
 console.log("cc2");
-///////////HOVER AND CLICK BUTTON BLUR BG////////////////////
+///////////////HOVER AND CLICK BUTTON BLUR BG////////////////////
+var swiper = new Swiper(".temoignage-home", {
+  slidesPerView: "auto",
+  centeredSlides: true,
+  spaceBetween: 30,
+  loop: true,
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+});
+
+///////////////HOVER AND CLICK BUTTON BLUR BG////////////////////
 $(document).ready(function () {
   $(".button__gradient__item").each(function () {
     const $buttonItem = $(this);
