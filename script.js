@@ -1,16 +1,56 @@
 console.log("cc2");
 ///////////////HOVER AND CLICK BUTTON BLUR BG////////////////////
-var swiper = new Swiper(".temoignage-home", {
-  slidesPerView: "auto",
-  centeredSlides: true,
-  spaceBetween: 30,
-  loop: true,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
-});
+$(document).ready(function () {
+  var swiper = new Swiper(".temoignage-home", {
+    slidesPerView: "auto",
+    centeredSlides: true,
+    spaceBetween: 30,
+    // loop: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    on: {
+      init: function () {
+        applyReviewCardStyles();
+        showRelevantCards();
+      },
+    },
+  });
 
+  function applyReviewCardStyles() {
+    $(".card-review").each(function () {
+      var $card = $(this);
+      var source = $card.data("source");
+
+      switch (source) {
+        case "Linkedin":
+          $card.addClass("linkedin");
+          break;
+        case "Google":
+          $card.addClass("google");
+          break;
+        case "13g":
+          $card.addClass("treize-g");
+          break;
+        // Vous pouvez ajouter d'autres cas ici si nécessaire
+      }
+    });
+  }
+
+  function showRelevantCards() {
+    // Cacher toutes les cartes par défaut
+    $(".card-review").hide();
+
+    // Afficher uniquement les cartes avec les classes spécifiées
+    $(
+      ".card-review.linkedin, .card-review.google, .card-review.treize-g",
+    ).show();
+
+    // Mettre à jour Swiper après avoir modifié la visibilité des slides
+    swiper.update();
+  }
+});
 ///////////////HOVER AND CLICK BUTTON BLUR BG////////////////////
 $(document).ready(function () {
   $(".button__gradient__item").each(function () {
