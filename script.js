@@ -1,13 +1,73 @@
 $(document).ready(function () {
+  $(".button-video-stuck").hover(
+    function () {
+      // Au survol
+      gsap.to($(this).find(".fake-arrow-width"), {
+        width: "100%",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+
+      gsap.to(this, {
+        paddingLeft: "1.67rem",
+        paddingRight: "4rem",
+        backgroundColor: "#8ddd8d",
+        color: "#131313", // Changement de couleur du texte
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+
+      gsap.to($(this).find(".icon-arrow-green-block"), {
+        backgroundColor: "#131313",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+
+      gsap.to($(this).find(".icon-arrow-green-block svg"), {
+        color: "#ffffff",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+    },
+    function () {
+      gsap.to($(this).find(".fake-arrow-width"), {
+        width: "0%",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+
+      gsap.to(this, {
+        paddingLeft: "4rem",
+        paddingRight: "1.67rem",
+        backgroundColor: "#131313",
+        color: "#ffffff",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+
+      gsap.to($(this).find(".icon-arrow-green-block"), {
+        backgroundColor: "#8ddd8d",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+
+      gsap.to($(this).find(".icon-arrow-green-block svg"), {
+        color: "#131313",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+    },
+  );
+});
+///////////////SWIPER HOME REVIEWS////////////////////
+$(document).ready(function () {
   var swiper;
 
   function initSwiper() {
-    // Initialiser l'opacité des diapositives à 0 et les déplacer vers le bas, sauf la slide active
     gsap.set(".swiper-slide.temoignage-home:not(.swiper-slide-active)", {
       opacity: 0,
       y: 40,
     });
-    // Initialiser seulement l'opacité de la slide active à 0, laisser Y à 0
     gsap.set(".swiper-slide.temoignage-home.swiper-slide-active", {
       opacity: 0,
       y: 0,
@@ -83,7 +143,6 @@ $(document).ready(function () {
 
     slides.forEach((slide) => {
       if (slide.classList.contains("swiper-slide-active")) {
-        // Animation pour la diapositive active (seulement opacité)
         gsap.to(slide, {
           opacity: 1,
           y: 0,
@@ -91,10 +150,9 @@ $(document).ready(function () {
           ease: "power2.out",
         });
       } else {
-        // Animation pour les autres diapositives (opacité + mouvement Y)
         gsap.to(slide, {
-          opacity: 1, // Opacité réduite pour les autres diapositives
-          y: 40, // Mouvement Y
+          opacity: 1,
+          y: 40,
           duration: 1.2,
           ease: "power2.out",
         });
@@ -121,7 +179,7 @@ $(document).ready(function () {
         trigger: ".first-slide",
         start: "top 10%",
         end: "bottom top",
-        markers: true,
+        // markers: true,
       },
     });
 
@@ -208,7 +266,7 @@ $(document).ready(function () {
           ease: "power2.inOut",
         },
         "-=0.5",
-      ) // Commencer l'animation de la slide active 0.5s avant la fin de firstCard
+      )
       .to(
         firstCard,
         {
@@ -222,19 +280,19 @@ $(document).ready(function () {
         ".swiper-slide.temoignage-home:not(.swiper-slide-active)",
         {
           opacity: 1,
-          y: 0, // Réintégration du mouvement Y de 40 à 0
+          y: 0,
           duration: 1.2,
           ease: "power2.out",
           stagger: 0.2,
         },
         "-=0.3",
-      ); // Commencer l'animation des autres slides un peu avant la fin de la transition de firstCard
+      );
   }
 
   initSwiper();
   initScrollAnimation();
 });
-///////////////HOVER AND CLICK BUTTON BLUR BG////////////////////
+///////////////HOVER AND CLICK BUTTON BLUR BG OFFRE////////////////////
 $(document).ready(function () {
   $(".button__gradient__item").each(function () {
     const $buttonItem = $(this);
@@ -434,9 +492,7 @@ $(document).ready(function () {
     switchTags(serviceName);
   });
 });
-
 //////////////////////SERVICES BUTTONS ANIMATION//////////////////////
-
 $(document).ready(function () {
   const $buttonBlocks = $(".services__button-block");
 
@@ -511,7 +567,6 @@ $(document).ready(function () {
     initializeButtonBlock(this);
   });
 });
-
 //////////////////////GRADIENT EFFECT NOISE/BLUR EFFECT//////////////////////
 $(document).ready(function () {
   const $gradientBgs = $(".gradient-blur-bg");
@@ -538,7 +593,6 @@ $(document).ready(function () {
     });
   });
 });
-
 //////////////////////HOVER ON VIDEO HOMEPAGE//////////////////////
 $(document).ready(function () {
   const $videoWrappers = $(".home-video__wrapper");
