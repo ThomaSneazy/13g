@@ -5,7 +5,6 @@ $(document).ready(function () {
     const videoBg = $(".video-bg");
     const video = videoBg.find("video")[0];
 
-    // Masquer le bouton
     gsap.to(button, {
       opacity: 0,
       duration: 0.5,
@@ -15,7 +14,6 @@ $(document).ready(function () {
       },
     });
 
-    // Animer la vidéo
     gsap.to(videoBg[0], {
       width: "100vw",
       height: "100vh",
