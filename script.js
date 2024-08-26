@@ -1,11 +1,8 @@
-console.log("cc2");
-///////////////HOVER AND CLICK BUTTON BLUR BG////////////////////
 $(document).ready(function () {
   var swiper = new Swiper(".temoignage-home", {
     slidesPerView: "auto",
     centeredSlides: true,
     spaceBetween: 30,
-    // loop: true,
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
@@ -22,20 +19,45 @@ $(document).ready(function () {
     $(".card-review").each(function () {
       var $card = $(this);
       var source = $card.data("source");
+      var className = "";
 
       switch (source) {
-        case "Linkedin":
-          $card.addClass("linkedin");
+        case "linkedin":
+          className = "linkedin";
           break;
-        case "Google":
-          $card.addClass("google");
+        case "google":
+          className = "google";
           break;
         case "13g":
-          $card.addClass("treize-g");
+          className = "treize-g";
           break;
-        // Vous pouvez ajouter d'autres cas ici si nécessaire
       }
+
+      if (className) {
+        $card.addClass(className);
+
+        $card
+          .find(".content-review, .info-titre, .poste-review")
+          .addClass(className);
+      }
+
+      handleStarRating($card);
     });
+  }
+
+  function handleStarRating($card) {
+    var $starWrapper = $card.find(".etoile-wrap");
+    var starRating = parseInt($starWrapper.data("star"));
+
+    if (starRating >= 1 && starRating <= 5) {
+      $starWrapper.find(".etoile-1").each(function (index) {
+        if (index < starRating) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    }
   }
 
   function showRelevantCards() {
