@@ -1,7 +1,94 @@
+/////////////////BUTTON ARROW PLAY VIDEO ZOOM-IN////////////////////
+$(document).ready(function () {
+  $(".button-video-stuck").on("click", function () {
+    const button = this;
+    const videoBg = $(".video-bg");
+    const video = videoBg.find("video")[0];
+
+    gsap.to(button, {
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: function () {
+        $(button).hide();
+      },
+    });
+
+    gsap.to(videoBg[0], {
+      width: "100vw",
+      height: "100vh",
+      duration: 1.3,
+      ease: "expo.inOut",
+      onStart: function () {
+        videoBg.css("z-index", "1000");
+      },
+    });
+
+    gsap.fromTo(
+      videoBg[0],
+      { scale: 1 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: "elastic.out(1, 0.8)",
+        onComplete: function () {
+          gsap.to(videoBg[0], { scale: 1, duration: 0.5, ease: "power2.out" });
+        },
+      },
+    );
+
+    if (video) {
+      video.play();
+      video.loop = true;
+    }
+  });
+});
+
+/////////////////BUTTON ARROW MAGNET (video bg)////////////////////
+$(document).ready(function () {
+  const button = $(".button-video-stuck");
+  const magneticArea = 130;
+  const magnetStrength = 0.4;
+  let isHovering = false;
+
+  $(document).on("mousemove", function (event) {
+    const { clientX, clientY } = event;
+    const { left, top, width, height } = button[0].getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+
+    const deltaX = clientX - centerX;
+    const deltaY = clientY - centerY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    if (distance < magneticArea) {
+      isHovering = true;
+      const moveX = deltaX * magnetStrength;
+      const moveY = deltaY * magnetStrength;
+
+      gsap.to(button, {
+        x: moveX,
+        y: moveY,
+        duration: 1.5,
+        ease: "elastic.out(1, 0.3)",
+      });
+    } else if (isHovering) {
+      isHovering = false;
+      gsap.to(button, {
+        x: 0,
+        y: 0,
+        duration: 1.5,
+        ease: "elastic.out(1, 0.3)",
+      });
+    }
+  });
+});
+
+/////////////////BUTTON ARROW HOVER (video bg)////////////////////
 $(document).ready(function () {
   $(".button-video-stuck").hover(
     function () {
-      // Au survol
       gsap.to($(this).find(".fake-arrow-width"), {
         width: "100%",
         duration: 0.8,
@@ -12,7 +99,7 @@ $(document).ready(function () {
         paddingLeft: "1.67rem",
         paddingRight: "4rem",
         backgroundColor: "#8ddd8d",
-        color: "#131313", // Changement de couleur du texte
+        color: "#131313",
         duration: 0.8,
         ease: "power2.inOut",
       });
@@ -59,6 +146,7 @@ $(document).ready(function () {
     },
   );
 });
+
 ///////////////SWIPER HOME REVIEWS////////////////////
 $(document).ready(function () {
   var swiper;
