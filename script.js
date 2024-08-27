@@ -1,3 +1,48 @@
+///////////BENTO GRID ARTICLES///////////////
+$(document).ready(function () {
+  const items = $(".adobe__item, .novum__item, .awwward__item, .behance__item");
+  const shuffledItems = gsap.utils.shuffle([...items]);
+
+  gsap.from(shuffledItems, {
+    scrollTrigger: {
+      trigger: ".home-articles__wrapper",
+      start: "top 70%",
+      end: "bottom 20%",
+      toggleActions: "play none none none",
+    },
+    scale: 0.5,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.inOut",
+    stagger: {
+      amount: 0.6,
+      from: "random",
+    },
+  });
+});
+///////////PREFOOTER IN BUILD///////////////
+$(document).ready(function () {
+  const images = $(".prefooter__img__item img");
+
+  images.each(function (index) {
+    gsap.fromTo(
+      this,
+      { y: "100%" },
+      {
+        y: "0%",
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".prefooter",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        delay: index * 0.4,
+      },
+    );
+  });
+});
+
 /////////////////BUTTON ARROW PLAY VIDEO ZOOM-IN////////////////////
 $(document).ready(function () {
   $(".button-video-stuck").on("click", function () {
@@ -14,9 +59,11 @@ $(document).ready(function () {
       },
     });
 
+    // Animer la vidéo
     gsap.to(videoBg[0], {
       width: "100vw",
       height: "100vh",
+      opacity: 1,
       duration: 1.3,
       ease: "expo.inOut",
       onStart: function () {
@@ -24,20 +71,7 @@ $(document).ready(function () {
       },
     });
 
-    gsap.fromTo(
-      videoBg[0],
-      { scale: 1 },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 1.5,
-        ease: "elastic.out(1, 0.8)",
-        onComplete: function () {
-          gsap.to(videoBg[0], { scale: 1, duration: 0.5, ease: "power2.out" });
-        },
-      },
-    );
-
+    // Lancer la vidéo
     if (video) {
       video.play();
       video.loop = true;
