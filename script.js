@@ -1,3 +1,6 @@
+console.log("hello 2");
+
+
 $(document).ready(function () {
   const prefooterImg = $(".prefooter__img__wrapper");
   const ctaPrefooter = $(".cta-prefooter__wrapper");
@@ -938,6 +941,7 @@ $(document).ready(function () {
   const $dropdownWrapper = $(".dropdown__list__wrapper");
   const $dropdownItems = $dropdownWrapper.find(".dropdown__item");
   let timeoutId;
+  let isSmallScreen = window.innerWidth <= 991;
 
   gsap.set($dropdownWrapper.get(0), {
     opacity: 0,
@@ -984,24 +988,42 @@ $(document).ready(function () {
     });
   }
 
-  $buttonDrop.on("mouseenter", function () {
-    clearTimeout(timeoutId);
-    showDropdown();
-  });
-
-  $buttonDrop.on("mouseleave", function () {
-    timeoutId = setTimeout(function () {
-      if (!$dropdownWrapper.is(":hover")) {
-        hideDropdown();
+  function handleInteraction(event) {
+    if (isSmallScreen) {
+      if (event.type === 'click') {
+        if ($dropdownWrapper.css('visibility') === 'hidden') {
+          showDropdown();
+        } else {
+          hideDropdown();
+        }
       }
-    }, 100);
-  });
+    } else {
+      if (event.type === 'mouseenter') {
+        clearTimeout(timeoutId);
+        showDropdown();
+      } else if (event.type === 'mouseleave') {
+        timeoutId = setTimeout(function () {
+          if (!$dropdownWrapper.is(":hover")) {
+            hideDropdown();
+          }
+        }, 100);
+      }
+    }
+  }
+
+  $buttonDrop.on("mouseenter mouseleave click", handleInteraction);
 
   $dropdownWrapper.on("mouseleave", function () {
-    timeoutId = setTimeout(function () {
-      if (!$buttonDrop.is(":hover")) {
-        hideDropdown();
-      }
-    }, 100);
+    if (!isSmallScreen) {
+      timeoutId = setTimeout(function () {
+        if (!$buttonDrop.is(":hover")) {
+          hideDropdown();
+        }
+      }, 100);
+    }
+  });
+
+  $(window).on('resize', function() {
+    isSmallScreen = window.innerWidth <= 991;
   });
 });
