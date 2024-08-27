@@ -1,3 +1,30 @@
+console.log("hello 2");
+
+
+$(document).ready(function () {
+  const prefooterImg = $(".prefooter__img__wrapper");
+  const ctaPrefooter = $(".cta-prefooter__wrapper");
+  const button = ctaPrefooter.find(".button-icon");
+  let originalParent;
+
+  function handleResize() {
+    if (window.innerWidth <= 767) {
+      if (!originalParent) {
+        originalParent = prefooterImg.parent();
+      }
+      prefooterImg.insertBefore(button);
+    } else if (originalParent) {
+      originalParent.append(prefooterImg);
+    }
+  }
+
+  // Initial check
+  handleResize();
+
+  // Listen for window resize events
+  $(window).on("resize", handleResize);
+});
+
 ///////////BENTO GRID ARTICLES///////////////
 $(document).ready(function () {
   const items = $(".adobe__item, .novum__item, .awwward__item, .behance__item");
@@ -59,19 +86,28 @@ $(document).ready(function () {
       },
     });
 
-    // Animer la vidéo
-    gsap.to(videoBg[0], {
-      width: "100vw",
-      height: "100vh",
-      opacity: 1,
-      duration: 1.3,
-      ease: "expo.inOut",
-      onStart: function () {
-        videoBg.css("z-index", "1000");
-      },
-    });
+    if (window.innerWidth > 767) {
+      gsap.to(videoBg[0], {
+        width: "100vw",
+        height: "100vh",
+        opacity: 1,
+        duration: 1.3,
+        ease: "expo.inOut",
+        onStart: function () {
+          videoBg.css("z-index", "1000");
+        },
+      });
+    } else {
+      gsap.to(videoBg[0], {
+        opacity: 1,
+        duration: 0.5,
+        ease: "power2.inOut",
+        onStart: function () {
+          videoBg.css("z-index", "1000");
+        },
+      });
+    }
 
-    // Lancer la vidéo
     if (video) {
       video.play();
       video.loop = true;
@@ -184,7 +220,6 @@ $(document).ready(function () {
 ///////////////SWIPER HOME REVIEWS////////////////////
 $(document).ready(function () {
   var swiper;
-
   function initSwiper() {
     gsap.set(".swiper-slide.temoignage-home:not(.swiper-slide-active)", {
       opacity: 0,
@@ -194,13 +229,26 @@ $(document).ready(function () {
       opacity: 0,
       y: 0,
     });
-
     swiper = new Swiper(".swiper.temoignage-home", {
       slidesPerView: "auto",
       centeredSlides: true,
       spaceBetween: 30,
       loop: true,
       grabCursor: true,
+      breakpoints: {
+        481: {
+          slidesPerView: "auto",
+          centeredSlides: true,
+          spaceBetween: 30,
+          loop: true,
+        },
+        0: {
+          slidesPerView: 1.1,
+          centeredSlides: false,
+          spaceBetween: 20,
+          loop: true,
+        },
+      },
       on: {
         init: function () {
           applyReviewCardStyles();
@@ -209,7 +257,6 @@ $(document).ready(function () {
       },
     });
   }
-
   function applyReviewCardStyles() {
     $(".card-review").each(function () {
       var $card = $(this);
@@ -235,7 +282,6 @@ $(document).ready(function () {
       handleStarRating($card);
     });
   }
-
   function handleStarRating($card) {
     var $starWrapper = $card.find(".etoile-wrap");
     var starRating = parseInt($starWrapper.data("star"));
@@ -249,7 +295,6 @@ $(document).ready(function () {
       });
     }
   }
-
   function showRelevantCards() {
     $(".card-review").hide();
     $(
@@ -259,10 +304,8 @@ $(document).ready(function () {
       swiper.update();
     }
   }
-
   function animateSlides() {
     const slides = document.querySelectorAll(".swiper-slide.temoignage-home");
-
     slides.forEach((slide) => {
       if (slide.classList.contains("swiper-slide-active")) {
         gsap.to(slide, {
@@ -281,138 +324,139 @@ $(document).ready(function () {
       }
     });
   }
-
   function initScrollAnimation() {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const firstCard = document.querySelector(".first-card");
-    const contentReview = firstCard.querySelector(".content-review.is_first");
-    const p = contentReview.querySelector("p");
-    const texts = contentReview.querySelectorAll("*");
-    const textSizeMedium = firstCard.querySelector(
-      ".text-size-medium.is_first",
-    );
-    const posteReview = firstCard.querySelector(".poste-review.is_first");
-    const infoTitre = firstCard.querySelector(".info-titre");
-    const starWrapper = firstCard.querySelector(".star-treize-g__wrapper");
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".first-slide",
-        start: "top 10%",
-        end: "bottom top",
-        // markers: true,
-      },
-    });
-
-    tl.to(firstCard, {
-      width: "34.72rem",
-      height: "auto",
-      minHeight: "12rem",
-      borderRadius: "0.5rem",
-      backgroundColor: "#2b2b2b",
-      duration: 1.2,
-      ease: "power2.inOut",
-    })
-      .to(
-        p,
-        {
-          fontSize: "0.9rem",
-          duration: 1,
-          ease: "power1.inOut",
-        },
-        "-=1.8",
-      )
-      .to(
-        texts,
-        {
-          fontSize: "0.9rem",
-          duration: 1,
-          ease: "power1.inOut",
-        },
-        "-=1.3",
-      )
-      .to(
-        textSizeMedium,
-        {
-          fontSize: "1.67rem",
-          duration: 1,
-          ease: "power1.inOut",
-        },
-        "-=1.3",
-      )
-      .to(
-        posteReview,
-        {
-          fontSize: "0.9rem",
-          duration: 1,
-          ease: "power1.inOut",
-        },
-        "-=1.3",
-      )
-      .to(
-        starWrapper,
-        {
-          fontSize: "0.9rem",
-          duration: 1,
-          ease: "power1.inOut",
-        },
-        "-=1.3",
-      )
-      .to(
-        infoTitre,
-        {
-          opacity: 0,
-          paddingLeft: "1.67rem",
-          minWidth: "0",
-          duration: 0.8,
-          ease: "power1.inOut",
-        },
-        0.3,
-      )
-      .to(
-        contentReview,
-        {
-          opacity: 0,
-          duration: 0.8,
-          ease: "power1.inOut",
-        },
-        0.2,
-      )
-      .to(
-        ".swiper-slide.temoignage-home.swiper-slide-active",
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.3,
-          ease: "power2.inOut",
-        },
-        "-=0.5",
-      )
-      .to(
-        firstCard,
-        {
-          opacity: 0,
-          duration: 0.3,
-          ease: "power1.inOut",
-        },
-        "-=0.2",
-      )
-      .to(
-        ".swiper-slide.temoignage-home:not(.swiper-slide-active)",
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power2.out",
-          stagger: 0.2,
-        },
-        "-=0.3",
+    if (window.innerWidth > 767) {
+      const firstCard = document.querySelector(".first-card");
+      const contentReview = firstCard.querySelector(".content-review.is_first");
+      const p = contentReview.querySelector("p");
+      const texts = contentReview.querySelectorAll("*");
+      const textSizeMedium = firstCard.querySelector(
+        ".text-size-medium.is_first",
       );
+      const posteReview = firstCard.querySelector(".poste-review.is_first");
+      const infoTitre = firstCard.querySelector(".info-titre");
+      const starWrapper = firstCard.querySelector(".star-treize-g__wrapper");
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".first-slide",
+          start: "top 10%",
+          end: "bottom top",
+        },
+      });
+      tl.to(firstCard, {
+        width: "34.72rem",
+        height: "auto",
+        minHeight: "12rem",
+        borderRadius: "0.5rem",
+        backgroundColor: "#2b2b2b",
+        duration: 1.2,
+        ease: "power2.inOut",
+      })
+        .to(
+          p,
+          {
+            fontSize: "0.9rem",
+            duration: 1,
+            ease: "power1.inOut",
+          },
+          "-=1.8",
+        )
+        .to(
+          texts,
+          {
+            fontSize: "0.9rem",
+            duration: 1,
+            ease: "power1.inOut",
+          },
+          "-=1.3",
+        )
+        .to(
+          textSizeMedium,
+          {
+            fontSize: "1.67rem",
+            duration: 1,
+            ease: "power1.inOut",
+          },
+          "-=1.3",
+        )
+        .to(
+          posteReview,
+          {
+            fontSize: "0.9rem",
+            duration: 1,
+            ease: "power1.inOut",
+          },
+          "-=1.3",
+        )
+        .to(
+          starWrapper,
+          {
+            fontSize: "0.9rem",
+            duration: 1,
+            ease: "power1.inOut",
+          },
+          "-=1.3",
+        )
+        .to(
+          infoTitre,
+          {
+            opacity: 0,
+            paddingLeft: "1.67rem",
+            minWidth: "0",
+            duration: 0.8,
+            ease: "power1.inOut",
+          },
+          0.3,
+        )
+        .to(
+          contentReview,
+          {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power1.inOut",
+          },
+          0.2,
+        )
+        .to(
+          ".swiper-slide.temoignage-home.swiper-slide-active",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.3,
+            ease: "power2.inOut",
+          },
+          "-=0.5",
+        )
+        .to(
+          firstCard,
+          {
+            opacity: 0,
+            duration: 0.3,
+            ease: "power1.inOut",
+          },
+          "-=0.2",
+        )
+        .to(
+          ".swiper-slide.temoignage-home:not(.swiper-slide-active)",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: "power2.out",
+            stagger: 0.2,
+          },
+          "-=0.3",
+        );
+    } else {
+      gsap.set(".first-card", { display: "none" });
+      gsap.set(".swiper-slide.temoignage-home", { opacity: 1, y: 0 });
+    }
   }
-
   initSwiper();
   initScrollAnimation();
+  $(window).on("resize", function () {
+    initScrollAnimation();
+  });
 });
 ///////////////HOVER AND CLICK BUTTON BLUR BG OFFRE////////////////////
 $(document).ready(function () {
@@ -718,138 +762,178 @@ $(document).ready(function () {
 //////////////////////HOVER ON VIDEO HOMEPAGE//////////////////////
 $(document).ready(function () {
   const $videoWrappers = $(".home-video__wrapper");
+  let animations = [];
 
-  $videoWrappers.each(function () {
-    const $wrapper = $(this);
-    const $itemWrappers = $wrapper.find(".home-video__item__wrapper");
-    const $button = $wrapper.find(".button-icon.is-video-section");
-    const $title = $wrapper.find(".home-video__btn .heading-style-h3");
-    const $videoBe = $wrapper.find(".video-be");
-    const $openButton = $wrapper.find(".home-video-btn__open");
-    const $openIcon = $openButton.find(".icon-arrow:not(.is-close)");
-    const $closeIcon = $openButton.find(".icon-arrow.is-close");
+  function initDesktopAnimation() {
+    $videoWrappers.each(function (index) {
+      const $wrapper = $(this);
+      const $itemWrappers = $wrapper.find(".home-video__item__wrapper");
+      const $button = $wrapper.find(".button-icon.is-video-section");
+      const $title = $wrapper.find(".home-video__btn .heading-style-h3");
+      const $videoBe = $wrapper.find(".video-be");
+      const $openButton = $wrapper.find(".home-video-btn__open");
+      const $openIcon = $openButton.find(".icon-arrow:not(.is-close)");
+      const $closeIcon = $openButton.find(".icon-arrow.is-close");
 
-    let activeVideoIndex = Math.floor(Math.random() * $videoBe.length);
+      let activeVideoIndex = Math.floor(Math.random() * $videoBe.length);
 
-    gsap.set($itemWrappers.get(), { height: "4.72rem", width: "20rem" });
-    gsap.set($button.get(0), { opacity: 0 });
-    gsap.set($title.get(0), { opacity: 1 });
-    gsap.set($videoBe.get(), { opacity: 0 });
-    gsap.set($openButton.get(0), { left: "0.4rem" });
-    gsap.set($closeIcon.get(0), { opacity: 0 });
+      gsap.set($itemWrappers, { height: "4.72rem", width: "20rem" });
+      gsap.set($button, { opacity: 0 });
+      gsap.set($title, { opacity: 1 });
+      gsap.set($videoBe, { opacity: 0 });
+      gsap.set($openButton, { left: "0.4rem" });
+      gsap.set($closeIcon, { opacity: 0 });
 
-    const tl = gsap.timeline({ paused: true });
+      const tl = gsap.timeline({ paused: true });
 
-    tl.to($itemWrappers.get(), {
-      height: "32rem",
-      width: "25rem",
-      duration: 0.8,
-      ease: "power3.inOut",
-    })
-      .to(
-        $button.get(0),
-        {
-          opacity: 1,
-          duration: 0.4,
-          ease: "power2.inOut",
-          onStart: () => $button.addClass("pointer-events-auto"),
-        },
-        "-=0.6",
-      )
-      .to(
-        $title.get(0),
-        {
+      tl.to($itemWrappers, {
+        height: "32rem",
+        width: "25rem",
+        duration: 0.8,
+        ease: "power3.inOut",
+      })
+        .to(
+          $button,
+          {
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.inOut",
+            onStart: () => $button.addClass("pointer-events-auto"),
+          },
+          "-=0.6",
+        )
+        .to(
+          $title,
+          {
+            opacity: 0,
+            duration: 0.4,
+            ease: "power2.inOut",
+          },
+          "-=0.4",
+        )
+        .to(
+          $videoBe.eq(activeVideoIndex),
+          {
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.inOut",
+          },
+          "-=0.4",
+        )
+        .to(
+          $openButton,
+          {
+            left: "98%",
+            xPercent: -100,
+            duration: 0.6,
+            ease: "power3.inOut",
+          },
+          "-=0.3",
+        )
+        .to(
+          $openIcon,
+          {
+            opacity: 0,
+            duration: 0.2,
+            ease: "power2.inOut",
+          },
+          "-=0.3",
+        )
+        .to(
+          $closeIcon,
+          {
+            opacity: 1,
+            duration: 0.2,
+            ease: "power2.inOut",
+          },
+          "-=0.2",
+        );
+
+      animations[index] = tl;
+
+      const toggleVideo = () => {
+        gsap.to($videoBe.eq(activeVideoIndex), {
           opacity: 0,
           duration: 0.4,
           ease: "power2.inOut",
-        },
-        "-=0.4",
-      )
-      .to(
-        $videoBe.get(activeVideoIndex),
-        {
+        });
+        activeVideoIndex = (activeVideoIndex + 1) % $videoBe.length;
+        gsap.to($videoBe.eq(activeVideoIndex), {
           opacity: 1,
           duration: 0.4,
           ease: "power2.inOut",
-        },
-        "-=0.4",
-      )
-      .to(
-        $openButton.get(0),
-        {
-          left: "98%",
-          xPercent: -100,
-          duration: 0.6,
-          ease: "power3.inOut",
-        },
-        "-=0.3",
-      )
-      .to(
-        $openIcon.get(0),
-        {
+        });
+      };
+
+      const hideAllVideos = () => {
+        gsap.to($videoBe, {
           opacity: 0,
-          duration: 0.2,
+          duration: 0.4,
           ease: "power2.inOut",
-        },
-        "-=0.3",
-      )
-      .to(
-        $closeIcon.get(0),
-        {
-          opacity: 1,
-          duration: 0.2,
-          ease: "power2.inOut",
-        },
-        "-=0.2",
-      );
+        });
+      };
 
-    const toggleVideo = () => {
-      gsap.to($videoBe.get(activeVideoIndex), {
-        opacity: 0,
-        duration: 0.4,
-        ease: "power2.inOut",
+      $wrapper.on("mouseenter", function () {
+        if (window.innerWidth > 991) {
+          tl.play();
+          $wrapper.addClass("z-index-2");
+        }
       });
-      activeVideoIndex = (activeVideoIndex + 1) % $videoBe.length;
-      gsap.to($videoBe.get(activeVideoIndex), {
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.inOut",
-      });
-    };
 
-    const hideAllVideos = () => {
-      gsap.to($videoBe.get(), {
-        opacity: 0,
-        duration: 0.4,
-        ease: "power2.inOut",
+      $wrapper.on("mouseleave", function () {
+        if (window.innerWidth > 991) {
+          tl.reverse();
+          hideAllVideos();
+          $wrapper.removeClass("z-index-2");
+          $button.removeClass("pointer-events-auto");
+        }
       });
-    };
 
-    $wrapper.on("mouseenter", function () {
-      tl.play();
-      $wrapper.addClass("z-index-2");
+      $openButton.on("click", function (e) {
+        e.stopPropagation();
+        if (window.innerWidth > 991) {
+          if (tl.progress() === 0 || tl.reversed()) {
+            tl.play();
+            $wrapper.addClass("z-index-2");
+          } else {
+            tl.reverse();
+            hideAllVideos();
+            $wrapper.removeClass("z-index-2");
+            $button.removeClass("pointer-events-auto");
+          }
+        }
+      });
     });
+  }
 
-    $wrapper.on("mouseleave", function () {
-      tl.reverse();
-      hideAllVideos();
-      $wrapper.removeClass("z-index-2");
-      $button.removeClass("pointer-events-auto");
-    });
-
-    $openButton.on("click", function (e) {
-      e.stopPropagation();
-      if (tl.progress() === 0 || tl.reversed()) {
-        tl.play();
-        $wrapper.addClass("z-index-2");
-      } else {
-        tl.reverse();
-        hideAllVideos();
-        $wrapper.removeClass("z-index-2");
-        $button.removeClass("pointer-events-auto");
+  function destroyAnimations() {
+    animations.forEach((tl) => {
+      if (tl) {
+        tl.kill();
       }
     });
-  });
+    gsap.set(
+      $(
+        ".home-video__item__wrapper, .button-icon.is-video-section, .home-video__btn .heading-style-h3, .video-be, .home-video-btn__open, .icon-arrow",
+      ),
+      { clearProps: "all" },
+    );
+  }
+
+  function handleResize() {
+    if (window.innerWidth > 991) {
+      destroyAnimations();
+      initDesktopAnimation();
+      $videoWrappers.removeClass("mobile-layout");
+    } else {
+      destroyAnimations();
+      $videoWrappers.addClass("mobile-layout");
+    }
+  }
+
+  handleResize();
+
+  $(window).on("resize", handleResize);
 });
 //////////////////////NAVBAR DROPDOWN//////////////////////
 $(document).ready(function () {
@@ -857,6 +941,7 @@ $(document).ready(function () {
   const $dropdownWrapper = $(".dropdown__list__wrapper");
   const $dropdownItems = $dropdownWrapper.find(".dropdown__item");
   let timeoutId;
+  let isSmallScreen = window.innerWidth <= 991;
 
   gsap.set($dropdownWrapper.get(0), {
     opacity: 0,
@@ -903,24 +988,42 @@ $(document).ready(function () {
     });
   }
 
-  $buttonDrop.on("mouseenter", function () {
-    clearTimeout(timeoutId);
-    showDropdown();
-  });
-
-  $buttonDrop.on("mouseleave", function () {
-    timeoutId = setTimeout(function () {
-      if (!$dropdownWrapper.is(":hover")) {
-        hideDropdown();
+  function handleInteraction(event) {
+    if (isSmallScreen) {
+      if (event.type === 'click') {
+        if ($dropdownWrapper.css('visibility') === 'hidden') {
+          showDropdown();
+        } else {
+          hideDropdown();
+        }
       }
-    }, 100);
-  });
+    } else {
+      if (event.type === 'mouseenter') {
+        clearTimeout(timeoutId);
+        showDropdown();
+      } else if (event.type === 'mouseleave') {
+        timeoutId = setTimeout(function () {
+          if (!$dropdownWrapper.is(":hover")) {
+            hideDropdown();
+          }
+        }, 100);
+      }
+    }
+  }
+
+  $buttonDrop.on("mouseenter mouseleave click", handleInteraction);
 
   $dropdownWrapper.on("mouseleave", function () {
-    timeoutId = setTimeout(function () {
-      if (!$buttonDrop.is(":hover")) {
-        hideDropdown();
-      }
-    }, 100);
+    if (!isSmallScreen) {
+      timeoutId = setTimeout(function () {
+        if (!$buttonDrop.is(":hover")) {
+          hideDropdown();
+        }
+      }, 100);
+    }
+  });
+
+  $(window).on('resize', function() {
+    isSmallScreen = window.innerWidth <= 991;
   });
 });
