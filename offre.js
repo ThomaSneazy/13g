@@ -101,35 +101,31 @@ $(document).ready(function() {
   let moveAnimation;
 
   $('.offre-lottie__block.is_last').hover(
-    function() { // Mouse enter
-      // Start color animation
-      $arrow.css('animation', 'colorChange 1.7s infinite');
+    function() { 
+      $arrow.css('animation', 'colorChange 1.5s infinite');
 
-      // Create GSAP timeline for movement with bounce effect
       moveAnimation = gsap.timeline({repeat: -1})
         .to($arrow, {
-          x: '120%', 
+          x: '150%', 
           duration: 0.6, 
           ease: "power1.in"
         })
-        .set($arrow, {x: '-120%'})
+        .set($arrow, {x: '-150%'})
         .to($arrow, {
           x: '0%', 
           duration: 1.5, 
-          ease: "elastic.out(1, 0.3)" // Ajout de l'effet de rebond ici
+          ease: "elastic.out(1, 0.3)" 
         });
     },
-    function() { // Mouse leave
-      // Stop color animation
+    function() { 
       $arrow.css('animation', 'none');
 
-      // Stop movement animation and reset position with a slight bounce
       if (moveAnimation) {
         moveAnimation.kill();
         gsap.to($arrow, {
           x: 0, 
           duration: 1, 
-          ease: "elastic.out(1, 0.3)" // Ajout d'un léger rebond au retour
+          ease: "elastic.out(1, 0.3)" 
         });
       }
     }
