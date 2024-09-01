@@ -95,7 +95,7 @@ $(document).ready(function() {
     closeAllPopups();
   });
 });
-//////////////////
+//////////////////Last lottie in grid/////////////////////
 $(document).ready(function() {
   const $arrow = $('.offre-lottie__block.is_last .icon-arrow.is-lottie');
   let moveAnimation;
