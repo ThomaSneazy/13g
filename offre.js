@@ -2,6 +2,63 @@
 gsap.registerPlugin(ScrollTrigger);
 
 
+
+gsap.registerPlugin(ScrollTrigger);
+
+document.addEventListener('DOMContentLoaded', function() {
+  const projectItems = gsap.utils.toArray('.offre-project__item');
+  let currentActiveItem = null;
+
+  function hideAllProjects() {
+    projectItems.forEach(item => {
+      const imgList = item.querySelector('.project-img__list');
+      const h1 = item.querySelector('.h1-vw');
+      gsap.to(imgList, { display: 'none', opacity: 0, duration: 0.3 });
+      h1.classList.remove('active');
+    });
+  }
+
+  function showProject(item) {
+    if (currentActiveItem !== item) {
+      if (currentActiveItem) {
+        const oldImgList = currentActiveItem.querySelector('.project-img__list');
+        const oldH1 = currentActiveItem.querySelector('.h1-vw');
+        gsap.to(oldImgList, { display: 'none', opacity: 0, duration: 0.3 });
+        oldH1.classList.remove('active');
+      }
+      const imgList = item.querySelector('.project-img__list');
+      const h1 = item.querySelector('.h1-vw');
+      gsap.to(imgList, { display: 'block', opacity: 1, duration: 0.3 });
+      h1.classList.add('active');
+      currentActiveItem = item;
+    }
+  }
+
+  projectItems.forEach(item => {
+    const imgList = item.querySelector('.project-img__list');
+    gsap.set(imgList, { display: 'none', opacity: 0 });
+
+    ScrollTrigger.create({
+      trigger: item,
+      start: 'top 55%',
+      end: 'bottom 45%',
+      onEnter: () => showProject(item),
+      onEnterBack: () => showProject(item),
+      onLeave: () => {
+        if (currentActiveItem === item) {
+          hideAllProjects();
+          currentActiveItem = null;
+        }
+      },
+      onLeaveBack: () => {
+        if (currentActiveItem === item) {
+          hideAllProjects();
+          currentActiveItem = null;
+        }
+      }
+    });
+  });
+});
 ///////////////SWIPER HOME REVIEWS////////////////////
 $(document).ready(function () {
   var swiper;
