@@ -15,5 +15,7 @@
     "css",
     "javascript"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "split-type": "^0.3.4"
+  }
 }

@@ -1,4 +1,7 @@
 console.log("hello cursor?");
+// import SplitType from "split-type";
+
+
 
 
 $(document).ready(function () {
