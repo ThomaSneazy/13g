@@ -2,6 +2,63 @@
 gsap.registerPlugin(ScrollTrigger);
 
 
+
+gsap.registerPlugin(ScrollTrigger);
+
+document.addEventListener('DOMContentLoaded', function() {
+  const projectItems = gsap.utils.toArray('.offre-project__item');
+  let currentActiveItem = null;
+
+  function hideAllProjects() {
+    projectItems.forEach(item => {
+      const imgList = item.querySelector('.project-img__list');
+      const h1 = item.querySelector('.h1-vw');
+      gsap.to(imgList, { display: 'none', opacity: 0, duration: 0.3 });
+      h1.classList.remove('active');
+    });
+  }
+
+  function showProject(item) {
+    if (currentActiveItem !== item) {
+      if (currentActiveItem) {
+        const oldImgList = currentActiveItem.querySelector('.project-img__list');
+        const oldH1 = currentActiveItem.querySelector('.h1-vw');
+        gsap.to(oldImgList, { display: 'none', opacity: 0, duration: 0.3 });
+        oldH1.classList.remove('active');
+      }
+      const imgList = item.querySelector('.project-img__list');
+      const h1 = item.querySelector('.h1-vw');
+      gsap.to(imgList, { display: 'block', opacity: 1, duration: 0.3 });
+      h1.classList.add('active');
+      currentActiveItem = item;
+    }
+  }
+
+  projectItems.forEach(item => {
+    const imgList = item.querySelector('.project-img__list');
+    gsap.set(imgList, { display: 'none', opacity: 0 });
+
+    ScrollTrigger.create({
+      trigger: item,
+      start: 'top 55%',
+      end: 'bottom 45%',
+      onEnter: () => showProject(item),
+      onEnterBack: () => showProject(item),
+      onLeave: () => {
+        if (currentActiveItem === item) {
+          hideAllProjects();
+          currentActiveItem = null;
+        }
+      },
+      onLeaveBack: () => {
+        if (currentActiveItem === item) {
+          hideAllProjects();
+          currentActiveItem = null;
+        }
+      }
+    });
+  });
+});
 ///////////////SWIPER HOME REVIEWS////////////////////
 $(document).ready(function () {
   var swiper;
@@ -421,48 +478,56 @@ $(document).ready(function() {
 
 
 /////////////STEP ANIMATION HERO OFFRE//////////////////
-// $(document).ready(function() {
-//     $('.offre-step__text:not(.step-1)').hide();
+$(document).ready(function() {
+  function isMobile() {
+      return window.innerWidth <= 767;
+  }
+
+  if (!isMobile()) {
+      $('.offre-step__text:not(.step-1)').hide();
+      
+      $('#step-1').addClass('active');
+      $('.offre-video.step-1').addClass('active');
     
-//     $('#step-1').addClass('active');
-//     $('.offre-video.step-1').addClass('active');
-  
-//     function switchContent(oldStep, newStep) {
-//       var $oldContent = $('.offre-step__text.step-' + oldStep);
-//       var $newContent = $('.offre-step__text.step-' + newStep);
-//       var $oldVideo = $('.offre-video.step-' + oldStep);
-//       var $newVideo = $('.offre-video.step-' + newStep);
-      
-//       gsap.to($oldContent, {
-//         y: -50,
-//         opacity: 0,
-//         duration: 0.5,
-//         onComplete: function() {
-//           $oldContent.hide();
-//           $newContent.show();
-//           gsap.fromTo($newContent, 
-//             { y: 50, opacity: 0 },
-//             { y: 0, opacity: 1, duration: 0.5 }
-//           );
-//         }
-//       });
-  
-//       $oldVideo.removeClass('active');
-//       $newVideo.addClass('active');
-  
-//       $('.step__number').removeClass('active');
-//       $('#step-' + newStep).addClass('active');
-//     }
-  
-//     $('.step__number').click(function() {
-//       var newStep = $(this).attr('id').split('-')[1];
-//       var currentStep = $('.offre-step__text:visible').attr('class').split(' ')[1].split('-')[1];
-      
-//       if (newStep !== currentStep) {
-//         switchContent(currentStep, newStep);
-//       }
-//     });
-//   });
+      function switchContent(oldStep, newStep) {
+        var $oldContent = $('.offre-step__text.step-' + oldStep);
+        var $newContent = $('.offre-step__text.step-' + newStep);
+        var $oldVideo = $('.offre-video.step-' + oldStep);
+        var $newVideo = $('.offre-video.step-' + newStep);
+        
+        gsap.to($oldContent, {
+          y: -50,
+          opacity: 0,
+          duration: 0.5,
+          onComplete: function() {
+            $oldContent.hide();
+            $newContent.show();
+            gsap.fromTo($newContent, 
+              { y: 50, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5 }
+            );
+          }
+        });
+    
+        $oldVideo.removeClass('active');
+        $newVideo.addClass('active');
+    
+        $('.step__number').removeClass('active');
+        $('#step-' + newStep).addClass('active');
+      }
+    
+      $('.step__number').click(function() {
+        if (!isMobile()) {
+          var newStep = $(this).attr('id').split('-')[1];
+          var currentStep = $('.offre-step__text:visible').attr('class').split(' ')[1].split('-')[1];
+          
+          if (newStep !== currentStep) {
+            switchContent(currentStep, newStep);
+          }
+        }
+      });
+  }
+});
 //////////////////////NAVBAR DROPDOWN//////////////////////
 
 $(document).ready(function () {
