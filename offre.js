@@ -421,48 +421,56 @@ $(document).ready(function() {
 
 
 /////////////STEP ANIMATION HERO OFFRE//////////////////
-// $(document).ready(function() {
-//     $('.offre-step__text:not(.step-1)').hide();
+$(document).ready(function() {
+  function isMobile() {
+      return window.innerWidth <= 767;
+  }
+
+  if (!isMobile()) {
+      $('.offre-step__text:not(.step-1)').hide();
+      
+      $('#step-1').addClass('active');
+      $('.offre-video.step-1').addClass('active');
     
-//     $('#step-1').addClass('active');
-//     $('.offre-video.step-1').addClass('active');
-  
-//     function switchContent(oldStep, newStep) {
-//       var $oldContent = $('.offre-step__text.step-' + oldStep);
-//       var $newContent = $('.offre-step__text.step-' + newStep);
-//       var $oldVideo = $('.offre-video.step-' + oldStep);
-//       var $newVideo = $('.offre-video.step-' + newStep);
-      
-//       gsap.to($oldContent, {
-//         y: -50,
-//         opacity: 0,
-//         duration: 0.5,
-//         onComplete: function() {
-//           $oldContent.hide();
-//           $newContent.show();
-//           gsap.fromTo($newContent, 
-//             { y: 50, opacity: 0 },
-//             { y: 0, opacity: 1, duration: 0.5 }
-//           );
-//         }
-//       });
-  
-//       $oldVideo.removeClass('active');
-//       $newVideo.addClass('active');
-  
-//       $('.step__number').removeClass('active');
-//       $('#step-' + newStep).addClass('active');
-//     }
-  
-//     $('.step__number').click(function() {
-//       var newStep = $(this).attr('id').split('-')[1];
-//       var currentStep = $('.offre-step__text:visible').attr('class').split(' ')[1].split('-')[1];
-      
-//       if (newStep !== currentStep) {
-//         switchContent(currentStep, newStep);
-//       }
-//     });
-//   });
+      function switchContent(oldStep, newStep) {
+        var $oldContent = $('.offre-step__text.step-' + oldStep);
+        var $newContent = $('.offre-step__text.step-' + newStep);
+        var $oldVideo = $('.offre-video.step-' + oldStep);
+        var $newVideo = $('.offre-video.step-' + newStep);
+        
+        gsap.to($oldContent, {
+          y: -50,
+          opacity: 0,
+          duration: 0.5,
+          onComplete: function() {
+            $oldContent.hide();
+            $newContent.show();
+            gsap.fromTo($newContent, 
+              { y: 50, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5 }
+            );
+          }
+        });
+    
+        $oldVideo.removeClass('active');
+        $newVideo.addClass('active');
+    
+        $('.step__number').removeClass('active');
+        $('#step-' + newStep).addClass('active');
+      }
+    
+      $('.step__number').click(function() {
+        if (!isMobile()) {
+          var newStep = $(this).attr('id').split('-')[1];
+          var currentStep = $('.offre-step__text:visible').attr('class').split(' ')[1].split('-')[1];
+          
+          if (newStep !== currentStep) {
+            switchContent(currentStep, newStep);
+          }
+        }
+      });
+  }
+});
 //////////////////////NAVBAR DROPDOWN//////////////////////
 
 $(document).ready(function () {
