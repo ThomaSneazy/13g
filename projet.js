@@ -1,8 +1,50 @@
 
-console.log("hey projets");
+console.log("hey projects");
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.left [data-project-name]');
+    const projectList = document.querySelector('.project__list');
+    const projects = projectList ? projectList.querySelectorAll('.project__item') : [];
 
+    function showProject(projectName) {
+        projects.forEach(project => {
+            if (project.getAttribute('data-project-name') === projectName) {
+                project.style.display = 'block';
+            } else {
+                project.style.display = 'none';
+            }
+        });
 
+        buttons.forEach(button => {
+            if (button.getAttribute('data-project-name') === projectName) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+    }
 
+    // Afficher le premier projet par défaut
+    if (projects.length > 0) {
+        const firstProjectName = projects[0].getAttribute('data-project-name');
+        showProject(firstProjectName);
+        console.log('Premier projet affiché:', firstProjectName);
+    } else {
+        console.error('Aucun projet trouvé dans .project__list');
+    }
+
+    // Gestion des clics sur les boutons
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const projectName = button.getAttribute('data-project-name');
+            showProject(projectName);
+        });
+    });
+
+    // Log pour le débogage
+    console.log('Nombre de projets trouvés:', projects.length);
+    console.log('Projets:', projects);
+});
+//////////////////////LOGO NAVBAR BLACK///////////////////////
 document.addEventListener('DOMContentLoaded', () => {
     function updateNavbarLogo() {
         const navbarLogo = document.querySelector('.navbar__logo');
@@ -10,22 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.location.href.includes('projets')) {
                 navbarLogo.style.color = '#131313';
             } else {
-                navbarLogo.style.color = ''; // Réinitialise à la couleur par défaut
+                navbarLogo.style.color = ''; 
             }
         }
     }
 
-    // Exécuter la fonction au chargement de la page
     updateNavbarLogo();
 
-    // Écouter les changements d'URL si vous utilisez une navigation côté client (SPA)
     window.addEventListener('popstate', updateNavbarLogo);
 
-    // Si vous utilisez des liens qui changent l'URL sans recharger la page, 
-    // vous pouvez ajouter un écouteur d'événements sur ces liens
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', (e) => {
-            // Attendre un court instant pour que l'URL soit mise à jour
             setTimeout(updateNavbarLogo, 0);
         });
     });
