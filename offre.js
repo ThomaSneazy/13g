@@ -1,6 +1,122 @@
 
 gsap.registerPlugin(ScrollTrigger);
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('[data-anchor]');
+  const anchorActives = document.querySelectorAll('.anchor-active');
 
+  function resetAllAnchors() {
+      anchorActives.forEach(anchor => {
+          anchor.classList.remove('active');
+      });
+  }
+
+  function activateAnchor(dataAnchor) {
+      const targetAnchor = document.querySelector(`.anchor-active[data-anchor="${dataAnchor}"]`);
+      if (targetAnchor) {
+          resetAllAnchors();
+          targetAnchor.classList.add('active');
+      }
+  }
+
+  buttons.forEach(button => {
+      button.addEventListener('click', (e) => {
+          const dataAnchor = button.getAttribute('data-anchor');
+          activateAnchor(dataAnchor);
+
+          // Scroll vers la section correspondante si nécessaire
+          const targetSection = document.querySelector(`[data-anchor="${dataAnchor}"]`);
+          if (targetSection) {
+              targetSection.scrollIntoView({ behavior: 'smooth' });
+          }
+      });
+  });
+
+  // Gestion du scroll (optionnel, selon vos besoins)
+  window.addEventListener('scroll', () => {
+      // Vous pouvez ajouter ici une logique pour activer/désactiver les ancres en fonction du scroll
+      // si c'est un comportement que vous souhaitez conserver
+  });
+});
+console.log("test cdb");
+//////////////////////COMMENTAIRE ICI///////////////////////
+$(document).ready(function () {
+  $(".button__contact__nav.is-anchor").hover(
+    function () {
+      // Déterminer la couleur en fonction de la classe
+      let color = "#8ddd8d"; // Couleur par défaut (vert)
+      if ($(this).find(".icon-arrow-green-block").hasClass("is-digitale")) {
+        color = "#faaafa"; // Rose pour .is-digitale
+      } else if ($(this).find(".icon-arrow-green-block").hasClass("is-mixte")) {
+        color = "#e0e055"; // Jaune pour .is-mixte
+      } else if ($(this).find(".icon-arrow-green-block").hasClass("is-event")) {
+        color = "#6066ee"; // Bleu pour .is-event
+      }
+
+      gsap.to($(this).find(".fake-arrow-width"), {
+        width: "100%",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+      gsap.to(this, {
+        paddingLeft: "1.11rem",
+        paddingRight: "3.4rem",
+        backgroundColor: color,
+        color: "",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+      gsap.to($(this).find(".icon-arrow-green-block"), {
+        backgroundColor: "#131313",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+      gsap.to($(this).find(".icon-arrow-green-block svg"), {
+        color: "#ffffff",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+    },
+    function () {
+      // Déterminer la couleur en fonction de la classe (même logique que ci-dessus)
+      let color = "#8ddd8d";
+      if ($(this).find(".icon-arrow-green-block").hasClass("is-digitale")) {
+        color = "#faaafa";
+      } else if ($(this).find(".icon-arrow-green-block").hasClass("is-mixte")) {
+        color = "#e0e055";
+      } else if ($(this).find(".icon-arrow-green-block").hasClass("is-event")) {
+        color = "#6066ee";
+      }
+
+      gsap.to($(this).find(".fake-arrow-width"), {
+        width: "0%",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+      gsap.to(this, {
+        paddingLeft: "3.4rem",
+        paddingRight: "1.11rem",
+        backgroundColor: "#131313",
+        color: "#ffffff",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+      gsap.to($(this).find(".icon-arrow-green-block"), {
+        backgroundColor: color,
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+      gsap.to($(this).find(".icon-arrow-green-block svg"), {
+        color: "#131313",
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+    }
+  );
+});
+
+
+
+//////////////////////COMMENTAIRE ICI//////////////////////
 document.addEventListener('DOMContentLoaded', function() {
   const projectItems = gsap.utils.toArray('.offre-project__item');
   let currentActiveItem = null;
