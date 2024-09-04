@@ -4162,7 +4162,7 @@
 65/project/workspace/node_modules/@babel/parser/bin/babel-parser.js1723657665826999000 0
 77/project/workspace/node_modules/caniuse-lite/data/features/custom-elements.js1723657671052000000 0
 70/project/workspace/node_modules/@parcel/core/lib/public/BundleGroup.js1723657668490000000 0
-27/project/workspace/offre.js1725288307736504702 0
+27/project/workspace/offre.js1725453542958975879 0
 67/project/workspace/node_modules/caniuse-lite/data/features/webgl.js1723657671052000000 0
 76/project/workspace/node_modules/@jridgewell/set-array/dist/set-array.mjs.map1723657666693000000 0
 63/project/workspace/node_modules/caniuse-lite/data/regions/DO.js1723657671052000000 0
